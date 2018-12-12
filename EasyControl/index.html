@@ -37,7 +37,7 @@
 
 	function loop(){
 		if(cpf){
-			tempdata=cpf.get("temperture sensor");
+			tempdata=cpf.get("temperature sensor");
 			celsius=toCelsius(tempdata);
 			document.getElementById("temp").innerHTML=celsius;
 
@@ -47,9 +47,7 @@
 				document.getElementById("degree").innerHTML=degree;
 				cpf.request('["analogWrite",4,' + Math.abs(degree-180)+']');
 			}
-
-		}
-		
+		}		
 		setTimeout(loop,1000);
 	}
 
