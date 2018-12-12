@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en ">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Cmpatible" content="ie=edge">
+
+	<link rel="stylesheet" href="main.css">
+	<link rel="stylesheet" href="http://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+
+	<title>指針溫度計</title>
+</head>
+
+
+<body>
+	<h1>指針溫度計</h1>>
+<div class="container">
+	<div class="col-xs-12">
+		<div class="images">
+			<img id="thermometer" stc="img/thermometer.png">
+			<img id="pointer" stc="img/pointer.png">
+		</div>
+
+		<br/>
+
+		<h3>Degree : <span>id="degree">nano</span>度</span></h3>
+		
+		<h3>Temperature : <span>id="temp"">nano</span>度C</span></h3>
+	</div>>
+</div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script>
+	var celsius=0;
+	var degree=0;
+	setup();
+
+	function loop(){
+		if(cpf){
+			tempdata=cpf.get("temperture sensor");
+			celsius=toCelsius(tempdata);
+			document.getElementById("temp").innerHTML=celsius;
+
+			if(celsius>=-30 && celsius<=50){
+				degree=Math.floor((180/80)*celsius+67.5);
+				document.getElementById("pointer").style.transform="rotate(" + degree + "deg)";
+				document.getElementById("degree").innerHTML=degree;
+				cpf.request('["analogWrite",4,' + Math.abs(degree-180)+']');
+			}
+
+		}
+		
+		setTimeout(loop,1000);
+	}
+
+	loop();
+
+	//temperature
+	function toCelsius(value){
+		var resistance = parseFloat((1023-value)*10000/value);
+		var temperature=1/(Math.log(resistance/10000)/3975+1/298.15)-273.15;
+		return temperature.toFixed(2);
+	}
+
+	//cpf setup
+	function setup(){
+		if(cpf){
+			cpf.setPinMode('["resetPin"] ,["setPinMode", "analog", 1,"INPUT"], ["setPinMode", "digital", 4, "SERVO"]');
+		}
+
+	}
+
+</script>
+
+</body>
+</html>
+
+
